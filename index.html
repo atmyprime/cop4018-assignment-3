@@ -44,7 +44,7 @@
   <main class="card" aria-labelledby="page-title">
     <header>
       <h1 id="page-title">Time‑Aware Image Webpage</h1>
-      <!-- Update these three lines to match your info if needed -->
+      
       <p><span class="badge">Name</span> <strong id="student-name">Jerl C. Wodford Jr.</strong></p>
       <p><span class="badge">Course</span> <span id="course-name">COP4813 — Web Applications Programming</span></p>
       <p><span class="badge">Major</span> <span id="major-name">Computer Science</span></p>
@@ -65,61 +65,33 @@
     </section>
   </main>
 
-  <script>
-    // --- Inline SVG images encoded as data URIs so the page works without external assets ---
-    const svg = {
-      morning: `<?xml version='1.0' encoding='UTF-8'?>
-        <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1600 900' role='img'>
-          <defs>
-            <linearGradient id='sky' x1='0' x2='0' y1='0' y2='1'>
-              <stop offset='0%' stop-color='#FFD29D'/>
-              <stop offset='60%' stop-color='#FFE7C7'/>
-              <stop offset='100%' stop-color='#C7F0FF'/>
-            </linearGradient>
-          </defs>
-          <rect width='100%' height='100%' fill='url(#sky)'/>
-          <circle cx='800' cy='450' r='120' fill='#FFA81E'/>
-          <rect y='780' width='1600' height='200' fill='#6ddccf'/>
-        </svg>`,
-      afternoon: `<?xml version='1.0' encoding='UTF-8'?>
-        <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1600 900' role='img'>
-          <defs>
-            <linearGradient id='sky2' x1='0' x2='0' y1='0' y2='1'>
-              <stop offset='0%' stop-color='#7EC8FF'/>
-              <stop offset='100%' stop-color='#CDEBFF'/>
-            </linearGradient>
-          </defs>
-          <rect width='100%' height='100%' fill='url(#sky2)'/>
-          <circle cx='1200' cy='250' r='110' fill='#FFD93D'/>
-          <rect y='780' width='1600' height='200' fill='#7ad66f'/>
-        </svg>`,
-      night: `<?xml version='1.0' encoding='UTF-8'?>
-        <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1600 900' role='img'>
-          <defs>
-            <radialGradient id='sky3' cx='50%' cy='30%'>
-              <stop offset='0%' stop-color='#1b2a6b'/>
-              <stop offset='100%' stop-color='#070b1a'/>
-            </radialGradient>
-          </defs>
-          <rect width='100%' height='100%' fill='url(#sky3)'/>
-          <circle cx='1200' cy='200' r='90' fill='#f5f7ff'/>
-          <g fill='#e6e9ff'>
-            <circle cx='300' cy='120' r='2'/>
-            <circle cx='520' cy='210' r='2'/>
-            <circle cx='700' cy='90' r='2'/>
-            <circle cx='900' cy='160' r='2'/>
-            <circle cx='1050' cy='80' r='2'/>
-            <circle cx='250' cy='300' r='2'/>
-            <circle cx='1400' cy='260' r='2'/>
-            <circle cx='1280' cy='360' r='2'/>
-          </g>
-          <rect y='780' width='1600' height='200' fill='#0e1a36'/>
-        </svg>`
-    };
+<script>
 
-    function svgToDataUri(code){
-      return 'data:image/svg+xml;utf8,' + encodeURIComponent(code.replace(/\n+\s*/g,' '));
-    }
+const images = {
+morning: 'https://upload.wikimedia.org/wikipedia/commons/6/65/Sunrise_03.jpg',
+afternoon: 'https://upload.wikimedia.org/wikipedia/commons/0/02/Blue_sky_%28cropped%29.jpg',
+night: 'https://upload.wikimedia.org/wikipedia/commons/0/07/Milky_Way_Dominican_Republic.jpg'
+};
 
-    function pickTimeSlot(hour){
-      // Morning: 06:
+
+function pickTimeSlot(hour){
+if (hour >= 6 && hour < 12) return 'morning';
+if (hour >= 12 && hour < 18) return 'afternoon';
+return 'night';
+}
+
+
+(function run(){
+const img = document.getElementById('time-image');
+const caption = document.getElementById('caption');
+const now = new Date();
+const slot = pickTimeSlot(now.getHours());
+const src = images[slot];
+const label = slot.charAt(0).toUpperCase() + slot.slice(1);
+img.src = src;
+img.alt = `${label} scene photograph`;
+caption.textContent = `Showing: ${label} (local time: ${now.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'})})`;
+})();
+</script>
+</body>
+</html>
