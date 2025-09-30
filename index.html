@@ -30,8 +30,11 @@
     header p { margin: 2px 0; color: var(--muted); }
     .intro { margin: 14px 0 20px; line-height: 1.55; }
     .img-frame {
-      display: grid; place-items: center; width: 100%; aspect-ratio: 16 / 9; background: #0a0f1e;
+      display: grid; place-items: center; width: 100%; aspect-ratio: 16 / 9; 
+      height: clamp(260px, 45vh, 520px);
+      background: #0a0f1e;
       border-radius: 18px; overflow: hidden; border: 1px solid rgba(148,163,184,.25);
+      margin: 16px 0;
     }
     img { max-width: 100%; height: auto; display: block; }
     figcaption { text-align: center; color: var(--muted); margin-top: 10px; font-size: .95rem; }
