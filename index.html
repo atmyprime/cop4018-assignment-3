@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Time‑Aware Image — Student Page</title>
+  <style>
+    :root {
+      --bg: #0b1020;
+      --card: #0f172a;
+      --ink: #e5e7eb;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+    }
+    html, body { height: 100%; }
+    body {
+      margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      color: var(--ink); background: radial-gradient(1200px 600px at 50% -10%, #1e293b, var(--bg));
+      display: grid; place-items: center; padding: 24px;
+    }
+    .card {
+      width: min(920px, 100%);
+      background: linear-gradient(180deg, rgba(56,189,248,.08), rgba(56,189,248,.03)), var(--card);
+      border: 1px solid rgba(148,163,184,.25);
+      border-radius: 24px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.35);
+      padding: 28px;
+    }
+    header h1 { font-size: 1.5rem; margin: 0 0 4px; letter-spacing: .2px; }
+    header p { margin: 2px 0; color: var(--muted); }
+    .intro { margin: 14px 0 20px; line-height: 1.55; }
+    .img-frame {
+      display: grid; place-items: center; width: 100%; aspect-ratio: 16 / 9; background: #0a0f1e;
+      border-radius: 18px; overflow: hidden; border: 1px solid rgba(148,163,184,.25);
+    }
+    img { max-width: 100%; height: auto; display: block; }
+    figcaption { text-align: center; color: var(--muted); margin-top: 10px; font-size: .95rem; }
+    .footer { margin-top: 20px; font-size: .9rem; color: var(--muted); }
+    noscript { display: block; margin-top: 12px; color: #fecaca; }
+    .badge { display:inline-block; font-size:.75rem; padding:.18rem .5rem; border:1px solid rgba(148,163,184,.3); border-radius:999px; margin-right:.4rem; color: var(--muted); }
+  </style>
+</head>
+<body>
+  <main class="card" aria-labelledby="page-title">
+    <header>
+      <h1 id="page-title">Time‑Aware Image Webpage</h1>
+      <!-- Update these three lines to match your info if needed -->
+      <p><span class="badge">Name</span> <strong id="student-name">Jerl C. Wodford Jr.</strong></p>
+      <p><span class="badge">Course</span> <span id="course-name">COP3330 — Object‑Oriented Programming</span></p>
+      <p><span class="badge">Major</span> <span id="major-name">Information Technology</span></p>
+      <p class="intro">Welcome! This page swaps a single image depending on the <em>user’s local time</em> — morning, afternoon, or evening/night — using a few lines of JavaScript.</p>
+    </header>
+
+    <figure class="img-frame">
+      <img id="time-image" alt="Time‑of‑day illustration" width="1600" height="900" />
+    </figure>
+    <figcaption id="caption">Loading image…</figcaption>
+
+    <noscript>
+      This site needs JavaScript enabled to change the image based on time.
+    </noscript>
+
+    <section class="footer" aria-label="How it works">
+      <p><strong>How it works:</strong> the script reads your device’s hour (0–23) and selects Morning (06:00–11:59), Afternoon (12:00–17:59), or Evening/Night (18:00–05:59). No personal data is collected; the time check runs only in your browser.</p>
+    </section>
+  </main>
+
+  <script>
+    // --- Inline SVG images encoded as data URIs so the page works without external assets ---
+    const svg = {
+      morning: `<?xml version='1.0' encoding='UTF-8'?>
+        <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1600 900' role='img'>
+          <defs>
+            <linearGradient id='sky' x1='0' x2='0' y1='0' y2='1'>
+              <stop offset='0%' stop-color='#FFD29D'/>
+              <stop offset='60%' stop-color='#FFE7C7'/>
+              <stop offset='100%' stop-color='#C7F0FF'/>
+            </linearGradient>
+          </defs>
+          <rect width='100%' height='100%' fill='url(#sky)'/>
+          <circle cx='800' cy='450' r='120' fill='#FFA81E'/>
+          <rect y='780' width='1600' height='200' fill='#6ddccf'/>
+        </svg>`,
+      afternoon: `<?xml version='1.0' encoding='UTF-8'?>
+        <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1600 900' role='img'>
+          <defs>
+            <linearGradient id='sky2' x1='0' x2='0' y1='0' y2='1'>
+              <stop offset='0%' stop-color='#7EC8FF'/>
+              <stop offset='100%' stop-color='#CDEBFF'/>
+            </linearGradient>
+          </defs>
+          <rect width='100%' height='100%' fill='url(#sky2)'/>
+          <circle cx='1200' cy='250' r='110' fill='#FFD93D'/>
+          <rect y='780' width='1600' height='200' fill='#7ad66f'/>
+        </svg>`,
+      night: `<?xml version='1.0' encoding='UTF-8'?>
+        <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1600 900' role='img'>
+          <defs>
+            <radialGradient id='sky3' cx='50%' cy='30%'>
+              <stop offset='0%' stop-color='#1b2a6b'/>
+              <stop offset='100%' stop-color='#070b1a'/>
+            </radialGradient>
+          </defs>
+          <rect width='100%' height='100%' fill='url(#sky3)'/>
+          <circle cx='1200' cy='200' r='90' fill='#f5f7ff'/>
+          <g fill='#e6e9ff'>
+            <circle cx='300' cy='120' r='2'/>
+            <circle cx='520' cy='210' r='2'/>
+            <circle cx='700' cy='90' r='2'/>
+            <circle cx='900' cy='160' r='2'/>
+            <circle cx='1050' cy='80' r='2'/>
+            <circle cx='250' cy='300' r='2'/>
+            <circle cx='1400' cy='260' r='2'/>
+            <circle cx='1280' cy='360' r='2'/>
+          </g>
+          <rect y='780' width='1600' height='200' fill='#0e1a36'/>
+        </svg>`
+    };
+
+    function svgToDataUri(code){
+      return 'data:image/svg+xml;utf8,' + encodeURIComponent(code.replace(/\n+\s*/g,' '));
+    }
+
+    function pickTimeSlot(hour){
+      // Morning: 06:
